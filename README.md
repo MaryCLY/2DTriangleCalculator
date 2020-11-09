@@ -1,6 +1,6 @@
 # 2DTriangleCalculator
-二维三角形的一些计算功能
-主要类是Triangle2D
+二维三角形的一些计算功能 \n
+主要类是Triangle2D \n
 getArea() -计算面积
 getPerimeter() -计算周长
 contains(MyPoint p) -判断点是否在三角形里
