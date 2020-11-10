@@ -53,14 +53,14 @@ public class Triangle2D {
 
     public boolean contain(MyPoint p) {
         //如果该点跟某端点重合，点P肯定不在三角形里
-        if (pointsEqual(p, p1) || pointsEqual(p, p2) || pointsEqual(p, p3)) {
+        if (Equal(p, p1) || Equal(p, p2) || Equal(p, p3)) {
             return false;
         } else {
             MyVector vectorPA = new MyVector(p, p1);
             MyVector vectorPB = new MyVector(p, p2);
             MyVector vectorPC = new MyVector(p, p3);
             //如果某两个向量共线，点P肯定不在三角形里，也无法正常形成三个三角形
-            if (vectorsCollinear(vectorPA, vectorPB) || vectorsCollinear(vectorPA, vectorPC) || vectorsCollinear(vectorPB, vectorPC)) {
+            if (Collinear(vectorPA, vectorPB) || Collinear(vectorPA, vectorPC) || Collinear(vectorPB, vectorPC)) {
                 return false;
             } else {
                 Triangle2D trianglePAB = new Triangle2D(p, p1, p2);
@@ -83,59 +83,59 @@ public class Triangle2D {
             return false;
             //如果t在本三角形里，那么一定不重叠
             //如果任意两边相交则重叠，如果都不相交则不重叠
-        } else if (linesIntersect(t.lineAB, lineAB) || linesIntersect(t.lineAB, lineAC) || linesIntersect(t.lineAB, lineBC)) {
+        } else if (Intersect(t.lineAB, lineAB) || Intersect(t.lineAB, lineAC) || Intersect(t.lineAB, lineBC)) {
             return true;
-        } else if (linesIntersect(t.lineAC, lineAB) || linesIntersect(t.lineAC, lineAC) || linesIntersect(t.lineAC, lineBC)) {
+        } else if (Intersect(t.lineAC, lineAB) || Intersect(t.lineAC, lineAC) || Intersect(t.lineAC, lineBC)) {
             return true;
         } else
-            return linesIntersect(t.lineBC, lineAB) || linesIntersect(t.lineBC, lineAC) || linesIntersect(t.lineBC, lineBC);
+            return Intersect(t.lineBC, lineAB) || Intersect(t.lineBC, lineAC) || Intersect(t.lineBC, lineBC);
     }
 
-    public boolean pointsEqual(MyPoint p1, MyPoint p2) {
+    public boolean Equal(MyPoint p1, MyPoint p2) {
         //判断点相等的辅助函数
         return p1.getX() == p2.getX() && p1.getY() == p2.getY();
     }
 
-    public boolean vectorsEqual(MyVector v1, MyVector v2) {
+    public boolean Equal(MyVector v1, MyVector v2) {
         //判断向量相等的辅助函数
         return v1.getX() == v2.getX() && v1.getY() == v2.getY();
     }
 
-    public boolean vectorsOpposite(MyVector v1, MyVector v2) {
+    public boolean Opposite(MyVector v1, MyVector v2) {
         //判断向量相反的辅助函数
         return v1.getX() == (-v2.getX()) && v1.getY() == (-v2.getY());
     }
 
-    public boolean vectorsCollinear(MyVector v1, MyVector v2) {
+    public boolean Collinear(MyVector v1, MyVector v2) {
         //判断向量共线的辅助函数
-        return vectorsEqual(v1.getDirection(), v2.getDirection()) || vectorsOpposite(v1.getDirection(), v2.getDirection());
+        return Equal(v1.getDirection(), v2.getDirection()) || Opposite(v1.getDirection(), v2.getDirection());
     }
 
-    public boolean pointOnLine(MyPoint p, MyLine l) {
+    public boolean Intersect(MyPoint p, MyLine l) {
         //判断点在线上的辅助函数
-        if (pointsEqual(p, l.getA()) || pointsEqual(p, l.getB())) {
+        if (Equal(p, l.getA()) || Equal(p, l.getB())) {
             return true;
             //如果点跟线的端点重合，则点一定在线上
         } else {
             MyVector vectorPA = new MyVector(p, l.getA());
             MyVector vectorPB = new MyVector(p, l.getB());
-            return vectorsOpposite(vectorPA, vectorPB);
+            return Opposite(vectorPA, vectorPB);
             //如果PA和PB相反，则点一定在线上，否则不在
         }
     }
 
-    public boolean linesIntersect(MyLine l1, MyLine l2) {
+    public boolean Intersect(MyLine l1, MyLine l2) {
         //判断两条边有相交的辅助函数
         //如果某一边的端点在另一边上，那么一定有相交
-        if (pointOnLine(l1.getA(), l2) || pointOnLine(l1.getB(), l2)) {
+        if (Intersect(l1.getA(), l2) || Intersect(l1.getB(), l2)) {
             return true;
-        } else if (pointOnLine(l2.getA(), l1) || pointOnLine(l2.getB(), l1)) {
+        } else if (Intersect(l2.getA(), l1) || Intersect(l2.getB(), l1)) {
             return true;
         } else {
             //判断两条边是否平行，如果是，那么一定不相交
             MyVector vectorL1 = new MyVector(l1);
             MyVector vectorL2 = new MyVector(l2);
-            if (vectorsCollinear(vectorL1, vectorL2)) {
+            if (Collinear(vectorL1, vectorL2)) {
                 return false;
             } else {
                 //判断两条边的X是否重叠，如果不重叠，那么一定不相交
